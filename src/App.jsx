@@ -7,6 +7,7 @@ import ProtectedRoute from './components/routeprotection/ProtectedRoute'
 import Register from './pages/auth/Register'
 import RequestPage from './pages/RequestPage'
 import AdminRoute from './components/routeprotection/AdminRoute'
+import PublicRoute from './components/routeprotection/PublicRoute'
 
 function App() {
   return (
@@ -15,8 +16,23 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/login" />}></Route>
 
-          <Route path="/login" element={<Login></Login>}></Route>
-          <Route path="/register" element={<Register></Register>}></Route>
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login></Login>
+              </PublicRoute>
+            }>
+          </Route>
+
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <Register></Register>
+              </PublicRoute>
+            }>
+          </Route>
 
           <Route path="/admin/requests" element={
             <AdminRoute>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import Navbar from "../components/common/Navbar"
 import { approveRequest, getAllRequests, getAllUsers, rejectAllRequests, rejectRequest, removeUser } from "../services/adminService"
 import "./RequestPage.css"
+import { useAuth } from "../context/AuthContext"
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 const CheckIcon = () => (
@@ -47,6 +48,7 @@ export default function RequestPage() {
     const [users, setUsers] = useState([])
     const [requests, setRequests] = useState([])
     const [loading, setLoading] = useState(true)
+    const { user } = useAuth()
 
     // ── Requests handlers ─────────────────────────────────────────────────────
     const handleAccept = async (username, role) => {
@@ -121,7 +123,7 @@ export default function RequestPage() {
                     <div className="section-header">
                         <div className="section-accent section-accent--blue" />
                         <h2 className="section-title section-title--blue">Registered Users</h2>
-                        <span className="section-count section-count--blue">{users.length} total</span>
+                        <span className="section-count section-count--blue">{users.length - 1} total</span>
                     </div>
 
                     <div className="table-scroll-wrapper">
@@ -140,22 +142,24 @@ export default function RequestPage() {
                                         <tr>
                                             <td colSpan={4} className="cell-empty">No users found.</td>
                                         </tr>
-                                    ) : users.map((user, i) => (
-                                        <tr key={user.username}>
-                                            <td className="cell-serial">{i + 1}</td>
-                                            <td className="cell-username">{user.username}</td>
-                                            <td>
-                                                <span className={`role-badge ${user.role === "ADMIN" ? "role-badge--admin" : "role-badge--user"}`}>
-                                                    {user.role}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <div className="cell-actions">
-                                                    <RemoveButton onClick={() => handleRemoveUser(user.username)} />
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
+                                    ) : users
+                                        .filter(user_ => user?.username !== user_.username)
+                                        .map((user_, i) => (
+                                            <tr key={user_.username}>
+                                                <td className="cell-serial">{i + 1}</td>
+                                                <td className="cell-username">{user_.username}</td>
+                                                <td>
+                                                    <span className={`role-badge ${user_.role === "ADMIN" ? "role-badge--admin" : "role-badge--user"}`}>
+                                                        {user_.role}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <div className="cell-actions">
+                                                        <RemoveButton onClick={() => handleRemoveUser(user_.username)} />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
                                 </tbody>
                             </table>
                         </div>
