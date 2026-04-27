@@ -18,9 +18,9 @@ export const approveRequest = (username) => API.patch(`/admin/registrations/${us
 // Approve user request - PATCH /admin/registrations/{username}/reject
 // Expected body: {}
 // Expected response: 204 No content
-export const rejectRequest = (username) => API.delete(`/admin/registrations/${username}/reject`)
+export const rejectRequest = (username) => API.delete(`/admin/registrations/${encodeURIComponent(username)}/reject`)
 
 
-export const removeUser = (username) => API.delete(`/admin/user/${username}/remove`)
+export const removeUser = (username) => API.delete(`/admin/user/${encodeURIComponent(username)}/remove`)
 
 export const rejectAllRequests = () => API.delete(`/admin/registerations/reject-all`)

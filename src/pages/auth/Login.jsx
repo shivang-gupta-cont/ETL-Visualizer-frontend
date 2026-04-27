@@ -123,10 +123,10 @@ const EyeOffIcon = () => (
     </svg>
 )
 
-const PersonIcon = () => (
+const EmailIcon = () => (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="8" r="4" />
-        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+        <rect x="2" y="4" width="20" height="16" rx="2" />
+        <path d="M2 7l10 7 10-7" />
     </svg>
 )
 
@@ -138,7 +138,7 @@ const LockIcon = () => (
 )
 
 export default function Login() {
-    const [form, setForm] = useState({ username: '', password: '' })
+    const [form, setForm] = useState({ email: '', password: '' })
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const [focused, setFocused] = useState(null)
@@ -149,10 +149,23 @@ export default function Login() {
 
     const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
+    const validateEmail = (email) => {
+        if (!email) return 'Email is required'
+        if (!email.toLowerCase().endsWith('@contevolve.com')) return 'Email must be from @contevolve.com domain'
+        return null
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         console.log("prevented?", e.defaultPrevented)
         setError('')
+
+        const emailError = validateEmail(form.email)
+        if (emailError) {
+            setError(emailError)
+            return
+        }
+
         setLoading(true)
         try {
             const res = await loginService(form)
@@ -163,7 +176,7 @@ export default function Login() {
             if (!err.response) {
                 setError("Unable to connect with the server.")
             }
-            else setError(err.response?.data?.message || 'Invalid username or password')
+            else setError(err.response?.data?.message || 'Invalid email or password')
         } finally {
             setLoading(false)
         }
@@ -199,22 +212,22 @@ export default function Login() {
                     {/* Form */}
                     <form onSubmit={(e) => handleSubmit(e)} className="login-form">
 
-                        {/* Username */}
+                        {/* email */}
                         <div>
-                            <label className="login-label">Username</label>
+                            <label className="login-label">Email</label>
                             <div className="input-wrap">
-                                <span className={`input-icon ${focused === 'username' ? 'focused' : ''}`}>
-                                    <PersonIcon />
+                                <span className={`input-icon ${focused === 'email' ? 'focused' : ''}`}>
+                                    <EmailIcon />
                                 </span>
                                 <input
-                                    type="text"
-                                    name="username"
-                                    value={form.username}
+                                    type="email"
+                                    name="email"
+                                    value={form.email}
                                     onChange={handleChange}
-                                    onFocus={() => setFocused('username')}
+                                    onFocus={() => setFocused('email')}
                                     onBlur={() => setFocused(null)}
                                     required
-                                    placeholder="Enter your username"
+                                    placeholder="Enter your email"
                                     className="login-input"
                                 />
                             </div>

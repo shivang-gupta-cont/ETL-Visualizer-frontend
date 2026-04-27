@@ -144,6 +144,13 @@ const PersonIcon = () => (
     </svg>
 )
 
+const EmailIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="4" width="20" height="16" rx="2" />
+        <path d="M2 7l10 7 10-7" />
+    </svg>
+)
+
 const LockIcon = () => (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <rect x="5" y="11" width="14" height="11" rx="2" />
@@ -166,16 +173,33 @@ const UserIcon = () => (
 
 // ── Main Component ────────────────────────────────────────────────────────────
 export default function Register() {
-    const [form, setForm] = useState({ username: '', password: '', role: '' })
+    const [form, setForm] = useState({ username: '', email: '', password: '', role: '' })
     const [message, setMessage] = useState({ msg: '', status: '' })
     const [loading, setLoading] = useState(false)
     const [focused, setFocused] = useState(null)
 
     const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
+    const validateEmail = (email) => {
+        if (!email) return 'Email is required'
+        if (!email.toLowerCase().endsWith('@contevolve.com')) return 'Email must be from @contevolve.com domain'
+        return null
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         setMessage({ msg: '', status: '' })
+
+        const emailError = validateEmail(form.email)
+        if (emailError) {
+            setMessage({ msg: emailError, status: "error" })
+            return
+        }
+        if (form.password.length < 6) {
+            setMessage({ msg: "Password must be at least 6 characters long.", status: "error" })
+            return
+        }
+
         setLoading(true)
         try {
             await registerReqService(form)
@@ -238,6 +262,27 @@ export default function Register() {
                                     onBlur={() => setFocused(null)}
                                     required
                                     placeholder="Enter your username"
+                                    className="register-input"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Email */}
+                        <div>
+                            <label className="register-label">Email</label>
+                            <div className="register-input-wrap">
+                                <span className={`register-input-icon ${focused === 'email' ? 'focused' : ''}`}>
+                                    <EmailIcon />
+                                </span>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={form.email}
+                                    onChange={handleChange}
+                                    onFocus={() => setFocused('email')}
+                                    onBlur={() => setFocused(null)}
+                                    required
+                                    placeholder="Enter your email"
                                     className="register-input"
                                 />
                             </div>
