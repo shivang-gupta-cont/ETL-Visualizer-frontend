@@ -134,7 +134,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { registerReq as registerReqService } from "../../services/authService"
-import "./Register.css"
+import "../../components/styles/Register.css"
 
 // ── SVG Icons ─────────────────────────────────────────────────────────────────
 const PersonIcon = () => (

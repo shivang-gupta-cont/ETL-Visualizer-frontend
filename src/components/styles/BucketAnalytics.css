@@ -1,0 +1,130 @@
+/* ── Wrapper ──────────────────────────────────────────────────────────────── */
+.bucket-analytics {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ── Breadcrumb nav ───────────────────────────────────────────────────────── */
+.ba-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(56, 189, 248, 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.ba-breadcrumb-segment {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ba-breadcrumb-sep {
+    color: rgba(56, 189, 248, 0.35);
+    font-size: 14px;
+    padding: 0 2px;
+    user-select: none;
+}
+
+.ba-breadcrumb-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: rgba(148, 163, 184, 0.75);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.ba-breadcrumb-btn:not(:disabled):hover {
+    background: rgba(56, 189, 248, 0.08);
+    border-color: rgba(56, 189, 248, 0.25);
+    color: #7dd3fc;
+}
+
+.ba-breadcrumb-btn.active {
+    background: rgba(56, 189, 248, 0.12);
+    border-color: rgba(56, 189, 248, 0.35);
+    color: #38bdf8;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+    cursor: default;
+}
+
+.ba-breadcrumb-btn:disabled {
+    cursor: default;
+}
+
+.ba-bc-icon {
+    font-size: 13px;
+    opacity: 0.7;
+    line-height: 1;
+}
+
+.ba-breadcrumb-btn.active .ba-bc-icon {
+    opacity: 1;
+    color: #38bdf8;
+    text-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+}
+
+.ba-breadcrumb-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    background: transparent;
+    color: rgba(148, 163, 184, 0.5);
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.ba-breadcrumb-close:hover {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.2);
+}
+
+/* ── View container ───────────────────────────────────────────────────────── */
+.ba-view {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.ba-view>div {
+    position: relative;
+}
+
+/* connector line between stacked views */
+.ba-view>div+div::before {
+    content: '';
+    display: block;
+    width: 2px;
+    height: 28px;
+    margin: 0 0 0 36px;
+    background: transparent;
+    border-radius: 2px;
+}

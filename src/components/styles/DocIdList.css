@@ -1,0 +1,296 @@
+/* ── Card wrapper ─────────────────────────────────────────────────────────── */
+.docid-card {
+    width: 100%;
+    padding: 32px 36px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(56, 189, 248, 0.15);
+    box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    position: relative;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+}
+
+.docid-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    width: 80%;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.6), transparent);
+}
+
+/* ── Header ───────────────────────────────────────────────────────────────── */
+.docid-header {
+    margin-bottom: 24px;
+}
+
+.docid-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7dd3fc;
+    margin: 0 0 6px;
+}
+
+.docid-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    margin: 0;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    text-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+}
+
+.docid-filter-key,
+.docid-filter-value {
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: 8px;
+    color: #38bdf8;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    padding: 4px 10px 4px 10px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.25s ease;
+    text-align: center;
+}
+
+.docid-filter-sep {
+    color: rgba(255, 255, 255, 0.3);
+    font-weight: 200;
+}
+
+*/ .docid-underline {
+    height: 2px;
+    width: 48px;
+    margin-top: 10px;
+    background: linear-gradient(90deg, #38bdf8, #1d4ed8);
+    border-radius: 2px;
+}
+
+/* ── States ───────────────────────────────────────────────────────────────── */
+.docid-loading {
+    text-align: center;
+    padding: 64px 0;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7dd3fc;
+    animation: docid-pulse 1.5s infinite;
+}
+
+@keyframes docid-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+.docid-error {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: #fca5a5;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* ── Search bar ───────────────────────────────────────────────────────────── */
+.docid-search-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(56, 189, 248, 0.15);
+    margin-bottom: 16px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.docid-search-wrap:focus-within {
+    border-color: rgba(56, 189, 248, 0.4);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.1);
+}
+
+.docid-search-icon {
+    font-size: 18px;
+    color: rgba(125, 211, 252, 0.5);
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.docid-search {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    color: #e2e8f0;
+    caret-color: #38bdf8;
+}
+
+.docid-search::placeholder {
+    color: rgba(148, 163, 184, 0.4);
+}
+
+.docid-search-clear {
+    background: transparent;
+    border: none;
+    color: rgba(148, 163, 184, 0.5);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0 2px;
+    line-height: 1;
+    transition: color 0.2s ease;
+    flex-shrink: 0;
+}
+
+.docid-search-clear:hover {
+    color: #fca5a5;
+}
+
+/* ── List ─────────────────────────────────────────────────────────────────── */
+.docid-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 420px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.docid-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.docid-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.docid-list::-webkit-scrollbar-thumb {
+    background: rgba(56, 189, 248, 0.2);
+    border-radius: 4px;
+}
+
+.docid-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(56, 189, 248, 0.4);
+}
+
+/* ── Row ──────────────────────────────────────────────────────────────────── */
+.docid-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: rgba(148, 163, 184, 0.8);
+    font-size: 13px;
+    font-family: 'Inter', monospace;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+}
+
+.docid-row:hover {
+    background: rgba(56, 189, 248, 0.08);
+    border-color: rgba(56, 189, 248, 0.2);
+    color: #e2e8f0;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.08);
+}
+
+.docid-icon {
+    font-size: 14px;
+    color: rgba(56, 189, 248, 0.4);
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+}
+
+.docid-row:hover .docid-icon {
+    color: #38bdf8;
+}
+
+.docid-text {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.docid-arrow {
+    flex-shrink: 0;
+    opacity: 0;
+    color: #38bdf8;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.docid-row:hover .docid-arrow {
+    opacity: 1;
+    transform: translateX(2px);
+}
+
+/* ── Empty state ──────────────────────────────────────────────────────────── */
+.docid-empty {
+    text-align: center;
+    padding: 40px 0;
+    font-size: 13px;
+    color: rgba(148, 163, 184, 0.4);
+    font-style: italic;
+}
+
+/* ── Footer ───────────────────────────────────────────────────────────────── */
+.docid-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.docid-footer-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #38bdf8;
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
+    animation: docid-pulse 2s infinite;
+    flex-shrink: 0;
+}
+
+.docid-footer-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #7dd3fc;
+}

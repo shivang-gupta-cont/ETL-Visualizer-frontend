@@ -1,0 +1,263 @@
+/* ── Card wrapper ─────────────────────────────────────────────────────────── */
+.wdv-card {
+    width: 100%;
+    padding: 32px 36px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(56, 189, 248, 0.15);
+    box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    position: relative;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+}
+
+.wdv-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    width: 80%;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.6), transparent);
+}
+
+/* ── Header ───────────────────────────────────────────────────────────────── */
+.wdv-header {
+    margin-bottom: 24px;
+}
+
+.wdv-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7dd3fc;
+    margin: 0 0 6px;
+}
+
+.wdv-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.wdv-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+    margin: 0;
+    letter-spacing: 0.02em;
+    font-family: monospace;
+    text-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.wdv-doc-id {
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: 8px;
+    color: #38bdf8;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    padding: 4px 10px 4px 10px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.25s ease;
+    text-align: center;
+}
+
+.wdv-underline {
+    height: 2px;
+    width: 48px;
+    margin-top: 10px;
+    background: linear-gradient(90deg, #38bdf8, #1d4ed8);
+    border-radius: 2px;
+}
+
+/* ── Copy button ──────────────────────────────────────────────────────────── */
+.wdv-copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    background: rgba(56, 189, 248, 0.08);
+    color: #7dd3fc;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.wdv-copy-btn:hover {
+    background: rgba(56, 189, 248, 0.15);
+    border-color: rgba(56, 189, 248, 0.5);
+    color: #38bdf8;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+}
+
+/* ── States ───────────────────────────────────────────────────────────────── */
+.wdv-loading {
+    text-align: center;
+    padding: 64px 0;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7dd3fc;
+    animation: wdv-pulse 1.5s infinite;
+}
+
+@keyframes wdv-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+.wdv-error {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: #fca5a5;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* ── JSON body ────────────────────────────────────────────────────────────── */
+.wdv-body {
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+}
+
+.wdv-json {
+    margin: 0;
+    padding: 20px 24px;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 560px;
+    white-space: pre;
+}
+
+.wdv-json::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+.wdv-json::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.wdv-json::-webkit-scrollbar-thumb {
+    background: rgba(56, 189, 248, 0.2);
+    border-radius: 4px;
+}
+
+.wdv-json::-webkit-scrollbar-thumb:hover {
+    background: rgba(56, 189, 248, 0.4);
+}
+
+/* ── JSON token colours ───────────────────────────────────────────────────── */
+.json-key {
+    color: #7dd3fc;
+}
+
+.json-string {
+    color: #86efac;
+}
+
+.json-number {
+    color: #fbbf24;
+}
+
+.json-bool {
+    color: #f472b6;
+}
+
+.json-null {
+    color: #94a3b8;
+    font-style: italic;
+}
+
+.json-bracket {
+    color: rgba(226, 232, 240, 0.6);
+}
+
+.json-colon {
+    color: rgba(226, 232, 240, 0.35);
+}
+
+.json-comma {
+    color: rgba(226, 232, 240, 0.35);
+}
+
+.json-index {
+    color: #94a3b8;
+}
+
+/* ── Row ──────────────────────────────────────────────────────────────────── */
+.json-row {
+    display: block;
+    line-height: 1.7;
+}
+
+/* ── Toggle button ────────────────────────────────────────────────────────── */
+.json-toggle {
+    background: transparent;
+    border: none;
+    color: rgba(56, 189, 248, 0.5);
+    font-size: 9px;
+    cursor: pointer;
+    padding: 0 4px 0 0;
+    line-height: 1;
+    transition: color 0.15s ease;
+    vertical-align: middle;
+}
+
+.json-toggle:hover {
+    color: #38bdf8;
+}
+
+/* ── Collapsed hint ───────────────────────────────────────────────────────── */
+.json-collapsed-hint {
+    color: rgba(148, 163, 184, 0.5);
+    font-size: 12px;
+    font-style: italic;
+    cursor: pointer;
+    margin-left: 4px;
+    transition: color 0.15s ease;
+}
+
+.json-collapsed-hint:hover {
+    color: #7dd3fc;
+}

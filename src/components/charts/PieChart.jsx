@@ -1,23 +1,30 @@
 import { useEffect, useState } from "react"
-import { fetchDocumentsCount, fetchDSATypeData } from "../../services/chartService"
-import "./PieChart.css"
+import { getDistributionDataByKey, getDocumentsCount, getValidKeys } from "../../services/BucketAnalyticsService"
+import "../styles/PieChart.css"
 
 // ── Data fetchers ─────────────────────────────────────────────────────────────
 const fetchTotalDocuments = async (bucket, source, collection) => {
     try {
-        const res = await fetchDocumentsCount(bucket, source, collection)
+        const res = await getDocumentsCount(bucket, source, collection)
         return res.data
     } catch { console.log("error fetching documents count") }
 }
 
-const fetchDocumentTypes = async (bucket, source, collection) => {
+const fetchData = async (bucket, source, collection, key) => {
     try {
-        const res = await fetchDSATypeData(bucket, source, collection)
+        const res = await getDistributionDataByKey(bucket, source, collection, key)
         return res.data.map((item) => {
             const type_name = Object.keys(item)[0]
             return { type_name, count: item[type_name] }
         })
     } catch { console.log("error fetching dsa type data") }
+}
+
+const fetchValidKeys = async () => {
+    try {
+        const res = await getValidKeys()
+        return res.data
+    } catch { console.log("error in fetching valid keys.") }
 }
 
 // ── Palette (sky blue tones — matches app theme) ──────────────────────────────
@@ -82,10 +89,6 @@ function PieSlice({ cx, cy, r, slice, isHovered, onHover, onLeave, animate, inde
             />
             {animate && sweepSpan > 18 && (
                 <>
-                    <text x={lp.x} y={lp.y - 6} textAnchor="middle" dominantBaseline="middle"
-                        fill="#0f172a" fontSize="11" fontWeight="800" fontFamily="Inter, sans-serif">
-                        {slice.type_name}
-                    </text>
                     <text x={lp.x} y={lp.y + 10} textAnchor="middle" dominantBaseline="middle"
                         fill="#0f172a" fontSize="10" fontFamily="monospace">
                         {(slice.pct * 100).toFixed(0)}%
@@ -97,12 +100,20 @@ function PieSlice({ cx, cy, r, slice, isHovered, onHover, onLeave, animate, inde
 }
 
 // ── Legend Item ───────────────────────────────────────────────────────────────
-function LegendItem({ slice, isHovered, onHover, onLeave, index }) {
+function LegendItem({ slice, isHovered, onHover, onLeave, index, selectedKey, onSliceClick }) {
+    // const [modalData, setModalData] = useState(null)
+    // const [modalLoading, setModalLoading] = useState(false)
+    // const [showModal, setShowModal] = useState(false)
+    const handleClick = async () => {
+        onSliceClick(selectedKey, slice.type_name)
+    }
     return (
-        <div
+        <button
             className={`legend-item ${isHovered ? "hovered" : ""}`}
             onMouseEnter={() => onHover(index)}
             onMouseLeave={onLeave}
+            onClick={handleClick}
+            title={`View details for ${slice.type_name}`}
         >
             <span
                 className="legend-swatch"
@@ -121,44 +132,76 @@ function LegendItem({ slice, isHovered, onHover, onLeave, index }) {
             >
                 {slice.count}
             </span>
-        </div>
+
+            {/* Small arrow hint */}
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+                style={{ marginLeft: 4, opacity: 0.5 }}>
+                <path d="M4 2l4 4-4 4" stroke={slice.color}
+                    strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+        </button>
     )
 }
 
 // ── Main Component ────────────────────────────────────────────────────────────
-export default function PieChart({ dataSource }) {
-    const [total, setTotal] = useState(null)
+export default function PieChart({ dataSource, onSliceClick }) {
+    const [totalDoc, setTotalDoc] = useState(null)
     const [slices, setSlices] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [hovered, setHovered] = useState(null)
     const [animate, setAnimate] = useState(false)
+    const [selectedKey, setSelectedKey] = useState('dsaType')
+    const [keys, setKeys] = useState([])
 
     useEffect(() => {
-        setTotal(null); setSlices([]); setLoading(true); setError(null); setAnimate(false)
+        setTotalDoc(null); setSlices([]); setLoading(true); setError(null); setAnimate(false)
             ; (async () => {
                 try {
-                    const [totalRes, typesRes] = await Promise.all([
+                    const [docs, distributionData, validKeys] = await Promise.all([
                         fetchTotalDocuments(dataSource, '_default', '_default'),
-                        fetchDocumentTypes(dataSource, '_default', '_default'),
+                        fetchData(dataSource, '_default', '_default', selectedKey),
+                        fetchValidKeys()
                     ])
-                    setTotal(totalRes.count)
-                    setSlices(buildSlices(typesRes))
+                    setTotalDoc(docs.count)
+                    setSlices(buildSlices(distributionData))
+                    setKeys(validKeys)
                     setTimeout(() => setAnimate(true), 80)
                 } catch { setError("Failed to load chart data.") }
                 finally { setLoading(false) }
             })()
-    }, [dataSource])
+    }, [dataSource, selectedKey])
 
     const cx = 150, cy = 150, r = 120
 
+    const handleChange = (e) => {
+        if (e.target.value) setSelectedKey(e.target.value)
+    }
+
     return (
+        // pie chart
         <div className="pie-card">
 
             {/* Header */}
             <div className="pie-header">
-                <p className="pie-label">Document Analytics — {dataSource}</p>
-                <h2 className="pie-title">Distribution by DSAType</h2>
+                <h2 className="pie-title">
+                    <label>Data Distribution by</label>
+                    <select
+                        value={selectedKey}
+                        onChange={handleChange}
+                        disabled={loading}
+                    >
+                        {/* Loading / placeholder state */}
+                        <option value="">
+                            {loading ? "Loading..." : "--select a key--"}
+                        </option>
+
+                        {/* Populated options from API */}
+                        {keys.map((key_) => (
+                            <option key={key_} value={key_}>{key_}</option>
+                        ))}
+                    </select>
+                </h2>
                 <div className="pie-underline" />
             </div>
 
@@ -195,7 +238,7 @@ export default function PieChart({ dataSource }) {
                                     stroke="rgba(56,189,248,0.2)" strokeWidth="1" />
                                 <text x={cx} y={cy - 8} textAnchor="middle"
                                     fill="#fff" fontSize="22" fontWeight="800" fontFamily="Inter, sans-serif">
-                                    {total}
+                                    {totalDoc}
                                 </text>
                                 <text x={cx} y={cy + 12} textAnchor="middle"
                                     fill="#7dd3fc" fontSize="9" fontFamily="monospace" letterSpacing="0.1em">
@@ -213,6 +256,8 @@ export default function PieChart({ dataSource }) {
                                     isHovered={hovered === i}
                                     onHover={setHovered}
                                     onLeave={() => setHovered(null)}
+                                    selectedKey={selectedKey}
+                                    onSliceClick={onSliceClick}
                                 />
                             ))}
                         </div>
@@ -224,7 +269,7 @@ export default function PieChart({ dataSource }) {
                             <span className="pie-footer-dot" />
                             Total Documents
                         </span>
-                        <span className="pie-footer-total">{total}</span>
+                        <span className="pie-footer-total">{totalDoc}</span>
                     </div>
                 </>
             )}

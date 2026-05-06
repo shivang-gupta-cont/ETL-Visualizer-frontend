@@ -1,7 +1,7 @@
-import { useState } from "react"
-import PieChart from "../components/charts/PieChart"
+import { useEffect, useState } from "react"
+import BucketAnalytics from "../components/charts/BucketAnalytics"
 import Navbar from "../components/common/Navbar"
-import "./Dashboard.css"
+import "../components/styles/Dashboard.css"
 
 // ── Add or remove data sources here freely ────────────────────────────────────
 const DATA_SOURCES = [
@@ -25,10 +25,10 @@ function ChartCard({ dataSource, icon, isSelected, onClick }) {
 }
 
 export default function Dashboard() {
-    const [selectedChart, setSelectedChart] = useState(null)
+    const [selectedBucket, setselectedBucket] = useState(null)
 
     const handleCardClick = (dataSource) => {
-        setSelectedChart(prev => prev === dataSource ? null : dataSource)
+        setselectedBucket(prev => prev === dataSource ? null : dataSource)
     }
 
     return (
@@ -54,22 +54,22 @@ export default function Dashboard() {
                             key={name}
                             dataSource={name}
                             icon={icon}
-                            isSelected={selectedChart === name}
+                            isSelected={selectedBucket === name}
                             onClick={handleCardClick}
                         />
                     ))}
                 </div>
 
                 {/* Chart display */}
-                {selectedChart && (
+                {selectedBucket && (
                     <div className="chart-section">
                         <div className="chart-section-header">
                             <div className="chart-section-dot" />
                             <span className="chart-section-title">
-                                Viewing: {selectedChart}
+                                Viewing: {selectedBucket}
                             </span>
                         </div>
-                        <PieChart dataSource={selectedChart} />
+                        <BucketAnalytics dataSource={selectedBucket} />
                     </div>
                 )}
 

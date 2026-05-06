@@ -8,6 +8,7 @@ import Register from './pages/auth/Register'
 import RequestPage from './pages/RequestPage'
 import AdminRoute from './components/routeprotection/AdminRoute'
 import PublicRoute from './components/routeprotection/PublicRoute'
+import ForgetPassword from './pages/forget-pswd/ForgetPassword'
 
 function App() {
   return (
@@ -30,6 +31,15 @@ function App() {
             element={
               <PublicRoute>
                 <Register></Register>
+              </PublicRoute>
+            }>
+          </Route>
+
+          <Route
+            path="/forget-password"
+            element={
+              <PublicRoute>
+                <ForgetPassword />
               </PublicRoute>
             }>
           </Route>

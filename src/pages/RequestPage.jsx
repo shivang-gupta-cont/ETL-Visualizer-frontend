@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import Navbar from "../components/common/Navbar"
 import { approveRequest, getAllRequests, getAllUsers, rejectAllRequests, rejectRequest, removeUser } from "../services/adminService"
-import "./RequestPage.css"
+import "../components/styles/RequestPage.css"
 import { useAuth } from "../context/AuthContext"
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
